@@ -60,7 +60,7 @@ if not WGET_AT:
 # It will be added to the WARC files and reported to the tracker.
 VERSION = '20230117.03'
 USER_AGENT = 'Archiveteam (https://wiki.archiveteam.org/; communicate at https://webirc.hackint.org/#ircs://irc.hackint.org/#archiveteam)'
-TRACKER_ID = 'revue'
+TRACKER_ID = 'egloos'
 TRACKER_HOST = 'legacy-api.arpa.li'
 MULTI_ITEM_SIZE = 25
 
@@ -250,19 +250,19 @@ class WgetArgs(object):
 # This will be shown in the warrior management panel. The logo should not
 # be too big. The deadline is optional.
 project = Project(
-    title = 'revue.co',
+    title = 'egloos',
     project_html = '''
-    <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/7/7d/Revue_logo.png" height="50px"/>
-    <h2>Revue <span class="links"><a href="https://getrevue.co/">Website</a> &middot; <a href="http://tracker.archiveteam.org/revue/">Leaderboard</a></span></h2>
+    <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/3/37/Egloos_logo.gif" height="50px"/>
+    <h2>Egloos <span class="links"><a href="http://egloos.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/egloos/">Leaderboard</a></span></h2>
     ''',
-    utc_deadline = datetime.datetime(2022,1,18, 0,0,0))
+    utc_deadline = datetime.datetime(2023,6,15, 15,0,0)) # Midnight Seoul
 
 pipeline = Pipeline(
     CheckIP(),
     GetItemFromTracker('http://{}/{}/multi={}/'
         .format(TRACKER_HOST, TRACKER_ID, MULTI_ITEM_SIZE),
         downloader, VERSION),
-    PrepareDirectories(warc_prefix='revue'),
+    PrepareDirectories(warc_prefix='egloos'),
     WgetDownload(
         WgetArgs(),
         max_tries=1,
