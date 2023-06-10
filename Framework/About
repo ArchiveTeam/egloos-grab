@@ -1,0 +1,34 @@
+Items have the format handler:(urlencoded JSON string of options)
+
+
+Functions in the general project script:
+before_exit - same args as wget has. If present its return value will be the return value of the overall before_exit.
+finish - same args as wget has
+(unimplemented) lookup_host - same interface as wget
+(currently disabled) find_handler - given an item string ("x:y"), return a handler object for that item. If it returns nil or if it is not present, the framework will try to find a handler of the item type in the handlers/ directory (e.g. "handlers/x.lua"), and fail if it can't. N.b. "y" is now assumed to be an URL
+Possible options:
+- A global blacklist (my idea for this functionality is rather to have the project redefine queue_request as a wrapper around the current one)
+- An option to have get_urls URLs passed into DCP (ditto)
+
+
+Functions in hander objects:
+[object].httploop_result - recieves the same arguments as the wget function. Returns nothing. If you want to retry an url use queue_url instead, with the (name TBD, delay) option if you want.
+[object].get_urls - recieves the same arguments as the wget function. Also returns nothing.
+[object].download_child_p - recieves the same arguments as the wget function. Returns nothing. (Internally the real callback will return false, but using some trickery I get it to accept queue_urls()-qeueud URLs anyway.)
+[object].write_to_warc - same args as wget, returns the same as wget.
+[object].take_subsequent_actions - same args as write_to_warc; if it exists and returns false, the response will not be written to WARC, and then handler's write_to_warc, download_child_p, get_urls, and httploop_result will not be run.
+Possible additions:
+A way to designate a returned handler as "send this to backfeed instead". Could have a general option that specifies a set.
+
+To implement, functions that can be called from handler objects:
+current_handler - not a function, rather a variable holding the current handler object. You should not write to this.
+current_options - current table of options. Similar to current_handler.
+queue_request(options_table, handler, backfeed=false) - possibly enqueue the request given by the options (wget options, and custom options) in options_table, using the specified handler. If backfeed is true, it will be sent to backfeed instead of being run locally. This may be implicitly deduplicated by backfeed, or by wget under its usual conditions. TODO global ignore and overrides for that
+get_body() - returns a string containing the current response body.
+
+
+
+Special options for the options table in queue_url():
+- Everything in vanilla wget-lua get_urls - see https://github.com/ArchiveTeam/wget-lua/wiki#callback-get_urls
+- prior_delay - retrieval will pause for at least this many seconds between the previous request and this one; possibly more if delay_until is later.
+- delay_until - retrieval will pause right before this request is going to be made, until this Unix time is reached, until prior_delay causes a longer pause.
