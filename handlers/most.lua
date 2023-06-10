@@ -49,8 +49,11 @@ end
 
 module.get_urls = function(file, url, is_css, iri)
 	-- Just do these once per domain
-	queue_request({url="http://" .. current_options["domain"] .. ".egloos.com/photo/photo.xml"}, "photo_xml")
-	queue_request({url="http://" .. current_options["domain"] .. ".egloos.com/archives"}, "photo_xml")
+	-- Yes, this does violate the model and suggests it is in need of revision
+	if current_options["url"]:match("^https://[^/%.]%.egloos%.com/$") and not get_body():match("블로그가 존재하지 않습니다") then
+		queue_request({url="http://" .. current_options["domain"] .. ".egloos.com/photo/photo.xml"}, "photo_xml")
+		queue_request({url="http://" .. current_options["domain"] .. ".egloos.com/archives"}, "most")
+	end
 	
 	-- Full images (thumbnails are successfully captured)
 	for full_img in get_body():gmatch("Control%.Modal%.openDialog%(this, event, '(http:[^%s']+)'") do
