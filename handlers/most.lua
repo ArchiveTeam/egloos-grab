@@ -33,7 +33,7 @@ local process_url = function(url, is_css)
 	elseif domain then -- Other page on site
 		if domain ~= "statweb"
 		and domain ~= "help"
-		and domain ~= "seq"
+		and domain ~= "sec"
 		and domain ~= "valley"
 		and domain ~= "www" then
 			queue_request({url="http://" .. domain .. ".egloos.com/", domain=domain}, "most", true)

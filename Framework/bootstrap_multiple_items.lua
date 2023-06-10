@@ -9,5 +9,5 @@ while true do
 	if not line then
 		break
 	end
-	print(arg[1] .. ":" .. qiu.serialize_request_options({url=line}))
+	print(arg[1] .. ":" .. qiu.serialize_request_options({url="http://" .. line .. ".egloos.com/", domain=line}))
 end
