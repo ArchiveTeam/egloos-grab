@@ -15,7 +15,7 @@ local date_exists_and_is_too_extreme = function(url)
 	end
 end
 
-local process_url = function(url)
+local process_url = function(url, is_css)
 	local domain = url:match("^https?://([a-zA-Z0-9%-_]+)%.egloos%.com")
 	if domain == current_options["domain"] then
 		if not url:match("/sns_share_frame%.php")
@@ -28,6 +28,8 @@ local process_url = function(url)
 		or domain == "rss"
 		or (domain and domain:match("^pds%d+$")) then -- Resources
 		queue_request({url=url}, retry_common.only_retry_handler(5, {200, 404, 301, 302}))
+	elseif is_css then
+		queue_request({url=url}, "css", true)
 	elseif domain then -- Other page on site
 		if domain ~= "statweb"
 		and domain ~= "help"
@@ -42,7 +44,7 @@ local process_url = function(url)
 end
 
 module.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
-	process_url(urlpos["url"]["url"])
+	process_url(urlpos["url"]["url"], urlpos["link_expect_css"] == 1)
 end
 
 module.get_urls = function(file, url, is_css, iri)
