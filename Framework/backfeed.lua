@@ -54,8 +54,8 @@ local queue_list_to = function(list, key)
 end
 
 module.upload = function()
-	queue_list_to(queue, "Main backfeed key here")
-	queue_list_to(external_urls_queue, "URLs backfeed key here")
+	queue_list_to(queue, "egloos-8o5ibt0t8fnr0wr6")
+	queue_list_to(external_urls_queue, "urls-psmsrrnwikcui82t")
 	queue = {}
 	external_urls_queue = {}
 end
