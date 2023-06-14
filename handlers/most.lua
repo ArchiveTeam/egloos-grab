@@ -6,7 +6,7 @@ local module = {}
 
 -- To prevent infinite calendars
 local date_exists_and_is_too_extreme = function(url)
-	local year = url:match("^https?://[^/%.].egloos%.com/archives/(%d%d%d%d)/%d+/%d+")
+	local year = url:match("^https?://[^/%.]+%.egloos%.com/archives/(%d%d%d%d)/%d+/?$")
 	if not year then
 		return false
 	else
