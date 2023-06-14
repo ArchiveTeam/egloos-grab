@@ -5,10 +5,10 @@ local module = {}
 
 module.get_urls = function(file, url, is_css, iri)
 	for photo in get_body():gmatch('<media:content url="(http:[^%s"]+)"') do
-		queue_request({url=photo}, retry_common.only_retry_handler(5, {200, 301, 302}))
+		queue_request({url=photo}, "resources", true)
 	end
 	for photo in get_body():gmatch('<media:thumbnail url="(http:[^%s"]+)"') do
-		queue_request({url=photo}, retry_common.only_retry_handler(5, {200, 301, 302}))
+		queue_request({url=photo}, "resources", true)
 	end
 end
 

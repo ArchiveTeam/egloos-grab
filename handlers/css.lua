@@ -4,7 +4,7 @@ local module = {}
 
 
 module.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
-	queue_request({url=urlpos["url"]["url"]}, retry_common.only_retry_handler(5, {200, 301, 302}))
+	queue_request({url=urlpos["url"]["url"]}, "resources", true)
 end
 
 
