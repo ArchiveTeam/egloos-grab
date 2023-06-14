@@ -65,6 +65,7 @@ end
 module.take_subsequent_actions = function(url, http_stat)
 	if http_stat["statcode"] >= 300 and http_stat["statcode"] <= 399 then
 		process_url(urlparse.absolute(url["url"], http_stat["newloc"]))
+		return true
 	end
 	
 	if http_stat["statcode"] == 200 then

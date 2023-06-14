@@ -24,7 +24,7 @@ END_URL = "http://archiveteam.invalid/end"
 ADDITIONAL_END_URL_BASE = "http://archiveteam.invalid/end_additional/"
 
 -- Whether to skip on backfeed
-do_debug = false
+do_debug = true
 
 -- -- Functions in the project script:
 -- Global begin/end stuff, also lookup_host (maybe pass it the item name as well?)
