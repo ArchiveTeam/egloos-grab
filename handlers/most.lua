@@ -27,7 +27,7 @@ local process_url = function(url, is_css)
 		or domain == "profile"
 		or domain == "rss"
 		or (domain and domain:match("^pds%d+$")) then -- Resources
-		queue_request({url=url}, retry_common.only_retry_handler(5, {200, 404, 301, 302}))
+		queue_request({url=url}, retry_common.only_retry_handler(5, {200, 301, 302}))
 	elseif is_css then
 		queue_request({url=url}, "css", true)
 	elseif domain then -- Other page on site
@@ -57,7 +57,7 @@ module.get_urls = function(file, url, is_css, iri)
 	
 	-- Full images (thumbnails are successfully captured)
 	for full_img in get_body():gmatch("Control%.Modal%.openDialog%(this, event, '(http:[^%s']+)'") do
-		queue_request({url=full_img}, retry_common.only_retry_handler(5, {200, 404}))
+		queue_request({url=full_img}, retry_common.only_retry_handler(5, {200}))
 	end
 end
 
@@ -67,7 +67,7 @@ module.take_subsequent_actions = function(url, http_stat)
 		process_url(urlparse.absolute(url["url"], http_stat["newloc"]))
 	end
 	
-	if http_stat["statcode"] ~= 429 then
+	if http_stat["statcode"] ~= 429 and http_stat ~= 404 then
 		return true
 	else
 		retry_common.retry_unless_hit_iters(4)
