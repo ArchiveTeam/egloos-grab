@@ -11,7 +11,7 @@ local date_exists_and_is_too_extreme = function(url)
 		return false
 	else
 		local year_int = tonumber(year)
-		return year > 2026 or year < 1996 -- Some posts appear to slightly post-date reality, hence the safety margin
+		return year_int > 2026 or year_int < 1996 -- Some posts appear to slightly post-date reality, hence the safety margin
 	end
 end
 
