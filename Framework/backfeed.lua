@@ -67,7 +67,6 @@ module.queue_request_for_upload = function(handler, params_serialized)
 end
 
 module.queue_external_url_for_upload = function(url)
-  assert(url:match("^https?://[^%s]+$"))
   external_urls_queue[url] = true
 end
 
