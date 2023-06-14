@@ -187,9 +187,23 @@ end
 -- This function is called as early as possible, every time a new request begins to be made/the script is informed of it.
 -- It is run from write_to_warc, but that isn't called in some cases (e.g. where DNS resolution fails) so httploop_result may call it as well, checking that it hasn't run already with the value of new_request_called_since_last_httploop_result.
 -- url is an url structure, not the actual url
+
+local prev_url = nil
 local new_request = function(url, http_stat)
 	print_cbsd("Doing new request on " .. url["url"], DEBUG)
 	local this_url = url["url"]
+	
+	-- Bypass the use of this framework for requests with identical URLs
+	-- This is because the targeted for this project is repeatedly giving HTTP errors of an undetermined nature, which caues WGET to retry the request, and messes up the queue since
+	-- So try to detect this case and allow it - look for repeats of URLs where they should not be repeating
+	-- This will still fail occasionally when an URL is retried, while it is also the next in the
+	--  queue
+	if this_url == prev_url and expected_urls:peek_left() ~= this_url then
+		return
+	else
+		prev_url = this_url
+	end
+	
 	-- Putting this here
 	if collectgarbage("count") > 1024 * 100 then
 		print("Warning: the Lua VM is using " .. tostring(collectgarbage("count")) .. "KB of memory")
@@ -288,6 +302,7 @@ end
 
 wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total_downloaded_bytes, total_download_time)
 	assert(finished_and_expect_no_more_urls)
+	assert(expected_urls:is_empty())
 	if general_project_script.finish then
 		general_project_script.finish(start_time, end_time, wall_time, numurls, total_downloaded_bytes, total_download_time)
 	end
