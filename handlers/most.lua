@@ -67,7 +67,7 @@ module.take_subsequent_actions = function(url, http_stat)
 		process_url(urlparse.absolute(url["url"], http_stat["newloc"]))
 	end
 	
-	if http_stat["statcode"] ~= 429 and http_stat ~= 404 then
+	if http_stat["statcode"] == 200 then
 		return true
 	else
 		retry_common.retry_unless_hit_iters(4)
