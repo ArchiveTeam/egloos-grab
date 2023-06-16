@@ -411,7 +411,7 @@ end
 local queue_initial_reqs = function()
 	for _, v in pairs(JSON:decode(os.getenv("initial_requests"))) do
 		-- TODO have a project-specific function that can scrutinize these and e.g. change them if it wants to increase their version?
-		queue_request_inner(queue_item_utils.deserialize_request_options(v[2]), find_handler_by_name(v[1]))
+		queue_request(queue_item_utils.deserialize_request_options(v[2]), v[1])
 	end
 end
 
