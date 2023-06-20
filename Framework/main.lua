@@ -198,7 +198,7 @@ local new_request = function(url, http_stat)
 	-- So try to detect this case and allow it - look for repeats of URLs where they should not be repeating
 	-- This will still fail occasionally when an URL is retried, while it is also the next in the
 	--  queue (i.e. you have a sandwhich of framework request, wget retry, framework request)
-	if this_url == prev_url and expected_urls:peek_left().url ~= this_url then
+	if this_url == prev_url and (expected_urls:is_empty() or expected_urls:peek_left().url ~= this_url) then
 		return
 	else
 		prev_url = this_url
