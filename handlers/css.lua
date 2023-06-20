@@ -10,7 +10,7 @@ end
 
 
 module.take_subsequent_actions = function(url, http_stat)
-	if http_stat["statcode"] == 200 then -- If this fails want to know, may require changing the way photos are found
+	if http_stat["statcode"] == 200 or http_stat["statcode"] == 404 then
 		return true
 	else
 		retry_common.retry_unless_hit_iters(4)
