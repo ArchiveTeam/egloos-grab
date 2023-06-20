@@ -197,8 +197,8 @@ local new_request = function(url, http_stat)
 	-- This is because the targeted for this project is repeatedly giving HTTP errors of an undetermined nature, which caues WGET to retry the request, and messes up the queue since
 	-- So try to detect this case and allow it - look for repeats of URLs where they should not be repeating
 	-- This will still fail occasionally when an URL is retried, while it is also the next in the
-	--  queue
-	if this_url == prev_url and expected_urls:peek_left() ~= this_url then
+	--  queue (i.e. you have a sandwhich of framework request, wget retry, framework request)
+	if this_url == prev_url and expected_urls:peek_left().url ~= this_url then
 		return
 	else
 		prev_url = this_url
