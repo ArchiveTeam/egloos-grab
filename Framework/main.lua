@@ -189,6 +189,7 @@ end
 -- url is an url structure, not the actual url
 
 local prev_url = nil
+local consecutive_retry_count = 0
 local new_request = function(url, http_stat)
 	print_cbsd("Doing new request on " .. url["url"], DEBUG)
 	local this_url = url["url"]
@@ -199,9 +200,15 @@ local new_request = function(url, http_stat)
 	-- This will still fail occasionally when an URL is retried, while it is also the next in the
 	--  queue (i.e. you have a sandwhich of framework request, wget retry, framework request)
 	if this_url == prev_url and (expected_urls:is_empty() or expected_urls:peek_left().url ~= this_url) then
+		new_request_called_since_last_httploop_result = true
+		consecutive_retry_count = consecutive_retry_count + 1
+		if consecutive_retry_count > 15 then
+			error("Too many retries")
+		end
 		return
 	else
 		prev_url = this_url
+		consecutive_retry_count = 0
 	end
 	
 	-- Putting this here
