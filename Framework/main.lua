@@ -112,13 +112,19 @@ local queue_request_inner = function(options_table, handler, backfeed)
 	assert(not options_table.post_data, "Use method=\"POST\" and the body_data option instead of post_data")
 	assert(handler, "If you want a handler that does nothing, use an empty table instead of nil")
 	
-	assert(string.match(options_table["url"], "^https?://.+/"))
+	assert(string.match(options_table["url"], "^https?://.+"))
 	
 	local no_fragment = string.match(options_table["url"], "^[^#]+")
 	assert(no_fragment)
 	if no_fragment ~= options_table["url"] then
 		print_cbsd("Eliminating fragment as to replace " .. options_table["url"] .. " with " .. no_fragment, INFO)
 		options_table["url"] = no_fragment
+	end
+	
+	if options_table["url"]:match("^https?://[^/]+$") then
+		local escaped = options_table["url"] .. "/"
+		print_cbsd("Adding trailing slash as to replace " .. options_table["url"] .. " with " .. escaped, INFO)
+		options_table["url"] = escaped
 	end
 	
 	local escaped = minimal_escape(options_table["url"])
