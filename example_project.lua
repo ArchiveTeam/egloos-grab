@@ -18,6 +18,8 @@ queue_request = function(options_table, handler, backfeed)
     end
 end
 
+_ = nil
+
 
 process_url = function(url)
     local domain = url:match("^https?://([a-zA-Z0-9%-_]+)%.egloos%.com")
