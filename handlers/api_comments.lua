@@ -18,8 +18,6 @@ module.get_urls = function(file, url, is_css, iri)
     end
 end
 
--- TODO take_subsequent_actions need info on the rate limiting mechanism - also on other API handlers
--- Also need to have real 404s saved, but get_urls cancelled out
-module.take_subsequent_actions = retry_common.status_code_subsequent_actions(5, {200})
+module.take_subsequent_actions = egloos_api_tsa
 
 return module

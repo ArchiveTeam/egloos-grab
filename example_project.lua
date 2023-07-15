@@ -1,5 +1,6 @@
 --require "strict"
 local backfeed = require "Framework/backfeed"
+local retry_common = require("Lib/retry_common")
 
 local module = {}
 
@@ -137,6 +138,32 @@ end
 -- Look through a string of HTML, extract the links it contains, send them where they need to go.
 process_html = function(html)
     extract_links_from_html(html, current_options.url, process_url)
+end
+
+local current_rate_limit_backoff = 15 -- In seconds
+
+egloos_api_tsa = function(url, http_stat)
+    local sc = http_stat["statcode"]
+    if sc == 200 then
+        current_rate_limit_backoff = 15
+        return true
+    elseif sc == 302 then
+        -- Sent to the closed site, retry
+        local new_options = deep_copy(current_options)
+        local cur_try = new_options["try"] or 1
+        new_options["try"] = cur_try + 1
+        queue_request(new_options, current_handler, false)
+        return false
+    elseif sc == 404 then
+        -- Rate-limited
+        current_rate_limit_backoff = current_rate_limit_backoff * 2
+        print("You are rate-limited; sleeping " .. tostring(current_rate_limit_backoff) .. "s")
+        os.execute("sleep " .. current_rate_limit_backoff)
+        return false
+    else
+        retry_common.retry_unless_hit_iters(5)
+        return false
+    end
 end
 
 return module
