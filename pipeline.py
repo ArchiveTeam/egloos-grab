@@ -41,7 +41,7 @@ if StrictVersion(seesaw.__version__) < StrictVersion('0.8.5'):
 WGET_AT = find_executable(
     'Wget+AT',
     [
-        'GNU Wget 1.21.3-at.20230605.01'
+        'GNU Wget 1.21.3-at.20230623.01'
     ],
     [
         './wget-at',
