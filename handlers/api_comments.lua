@@ -12,7 +12,7 @@ module.get_urls = function(file, url, is_css, iri)
 
     for _, comment in pairs(json["comment"]) do
         if comment["comment_writer"] ~= nil then
-            queue_request({url="https://api.egloos.com/v3/blog/" .. comment["comment_writer"] .. ".json"}, "comment_user", true)
+            queue_request({url="https://api.egloos.com/v3/blog/" .. comment["comment_writer"] .. ".json"}, "api_user", true)
             process_url(comment["comment_writer_url"])
         end
         queue_request({url=comment["comment_writer_thumbnail"]}, "resources", true)
