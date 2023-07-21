@@ -41,6 +41,7 @@ if StrictVersion(seesaw.__version__) < StrictVersion('0.8.5'):
 WGET_AT = find_executable(
     'Wget+AT',
     [
+        'GNU Wget 1.21.3-at.20230605.01',
         'GNU Wget 1.21.3-at.20230623.01'
     ],
     [
@@ -58,7 +59,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20230720.01'
+VERSION = '20230721.01'
 USER_AGENT = 'Archiveteam (https://wiki.archiveteam.org/; communicate at https://webirc.hackint.org/#ircs://irc.hackint.org/#archiveteam)'
 TRACKER_ID = 'egloos'
 TRACKER_HOST = 'legacy-api.arpa.li'
