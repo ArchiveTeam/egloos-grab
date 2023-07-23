@@ -161,7 +161,7 @@ egloos_api_tsa = function(url, http_stat)
         os.execute("sleep " .. current_rate_limit_backoff)
         return false
     else
-        retry_common.retry_unless_hit_iters(5)
+        retry_common.retry_unless_hit_iters(15)
         return false
     end
 end
