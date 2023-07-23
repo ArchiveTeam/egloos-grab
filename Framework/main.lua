@@ -111,8 +111,8 @@ local queue_request_inner = function(options_table, handler, backfeed)
 	options_table = queue_item_utils.fill_in_defaults(options_table)
 	assert(not options_table.post_data, "Use method=\"POST\" and the body_data option instead of post_data")
 	assert(handler, "If you want a handler that does nothing, use an empty table instead of nil")
-	
-	assert(string.match(options_table["url"], "^https?://.+"))
+
+	assert(string.match(options_table["url"], "^https?://.+"), "Non-url is " .. options_table["url"])
 	
 	local no_fragment = string.match(options_table["url"], "^[^#]+")
 	assert(no_fragment)
@@ -198,6 +198,11 @@ local prev_url = nil
 local consecutive_retry_count = 0
 local new_request = function(url, http_stat)
 	print_cbsd("Doing new request on " .. url["url"], DEBUG)
+
+	url_count = url_count + 1
+	io.stdout:write(url_count .. "=" .. http_stat["statcode"] .. " " .. url["url"] .. "  \n")
+	io.stdout:flush()
+
 	local this_url = url["url"]
 	
 	-- Bypass the use of this framework for requests with identical URLs
@@ -374,10 +379,6 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
 	new_request_called_since_last_httploop_result = false
 	
 	local status_code = http_stat["statcode"]
-
-	url_count = url_count + 1
-	io.stdout:write(url_count .. "=" .. status_code .. " " .. url["url"] .. "  \n")
-	io.stdout:flush()
 
 
 	-- TODO is do_take_subsequent_actions really necessary here? Should see in practice. Normally HLS doesn't really... do much, since the framework gets rid of the normal retry mechanism
