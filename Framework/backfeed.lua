@@ -9,8 +9,8 @@ local send_binary = function(to_send, key)
   local tries = 0
   while tries < 10 do
     local body, code, headers, status = http.request(
-      "https://legacy-api.arpa.li/backfeed/legacy/" .. key,
-      to_send
+            "https://legacy-api.arpa.li/backfeed/legacy/" .. key,
+            to_send
     )
     if code == 200 or code == 409 then
       break
@@ -40,7 +40,7 @@ local queue_list_to = function(list, key)
         to_send = to_send .. "\0" .. item
       end
       print("Queued " .. item)
-      
+
       if #to_send > 1500 then
         send_binary(to_send .. "\0", key)
         to_send = ""
@@ -54,20 +54,22 @@ local queue_list_to = function(list, key)
 end
 
 module.upload = function()
-	queue_list_to(queue, "egloos-8o5ibt0t8fnr0wr6")
-	queue_list_to(external_urls_queue, "urls-psmsrrnwikcui82t")
-	queue = {}
-	external_urls_queue = {}
+  queue_list_to(queue, "wysp-qzjkrxpuzjub4dmm")
+  queue_list_to(external_urls_queue, "urls-op991cap2s2amz92")
+  queue = {}
+  external_urls_queue = {}
 end
 
 module.queue_request_for_upload = function(handler, params_serialized)
-	assert(type(handler) == "string")
-	assert(type("params_serialized" == "string"))
-	queue[handler .. ":" .. params_serialized] = true
+  assert(type(handler) == "string")
+  assert(type("params_serialized" == "string"))
+  queue[handler .. ":" .. params_serialized] = true
 end
 
 module.queue_external_url_for_upload = function(url)
-  external_urls_queue[url] = true
+  if url:match(":") then
+    external_urls_queue[url] = true
+  end
 end
 
 return module
