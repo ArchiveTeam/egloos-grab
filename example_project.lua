@@ -6,16 +6,19 @@ local module = {}
 
 local queue_request_prev = queue_request
 queue_request = function(options_table, handler, backfeed)
+
+    -- Extract the underlying images from thumbnails
+    local thumb_orig = options_table["url"]:match("^https?://thumbnail%.egloos%.net/[^/]+/(https?://.+)")
+    if thumb_orig then
+        queue_request({url=thumb_orig}, "resources", true)
+        return false -- Thumbnail URL is shut down
+    end
+
+
     if options_table["url"] ~= "http://md.egloos.net/skin/img/common/ico_paging_prev.gif"
             and options_table["url"] ~= "http://md.egloos.net/skin/img/common/ico_paging_next.gif"
             and handler ~= "most" then
         queue_request_prev(options_table, handler, backfeed)
-
-        -- Extract the underlying images from thumbnails
-        local thumb_orig = options_table["url"]:match("^https?://thumbnail%.egloos%.net/[^/]+/(https?://.+)")
-        if thumb_orig then
-            queue_request({url=thumb_orig}, "resources", true)
-        end
     end
 end
 
