@@ -9,7 +9,7 @@ module.get_urls = function(file, url, is_css, iri)
     if get_body() == '{"error":{"category":"system","message":"Not Found"}}' then
         return
     end
-    local json = JSON:decode(get_body())
+    local json = JSON:decode(get_body())["bloginfo"]
     assert(not json["blog_cover"]) -- Not sure what these are
     if json["logo"] then
         queue_request({url=json["logo"]}, "resources", true)
