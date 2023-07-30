@@ -9,6 +9,12 @@ some discovered resources:%7b%22url%22%3a%22http%3a%2f%2fpds13%2eegloos%2ecom%2f
 some exact https://api.egloos.com/gkswn/post.json?page=4
 some discovered api_post:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fgkswn%2fpost%2f4761001%2ejson%22%7d
 
+# Fix for not getting beyond-1 post pages at first
+[api_post_list:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fgkswn%2fpost%2ejson%3fpage%3d2%22%7d]
+some exact https://api.egloos.com/gkswn/post.json?page=4
+some discovered api_post:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fgkswn%2fpost%2f4761001%2ejson%22%7d
+some discovered api_post:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fgkswn%2fpost%2f4098139%2ejson%22%7d
+
 # Nonexistant user
 [api_user:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fv3%2fblog%2fstastr%2ejson%22%7d]
 some exact https://api.egloos.com/v3/blog/stastr.json
