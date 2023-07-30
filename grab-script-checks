@@ -32,3 +32,13 @@ some discovered api_comments:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%
 [api_comments:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fnom3203%2fpost%2f2286196%2fcomment%2ejson%3fpage%3d1%22%7d]
 some discovered http://viagraomz.com/ # Homepage on p.3
 some exact https://api.egloos.com/nom3203/post/2286196/comment.json?page=7
+
+# Check that images are queued, thumbnails are not
+[api_post:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2ftotheno1%2fpost%2f4217440%2ejson%22%7d]
+some discovered resources:%7b%22url%22%3a%22http%3a%2f%2fpds27%2eegloos%2ecom%2fpds%2f202306%2f05%2f83%2fa0016483_647defb88bd9a%2ejpg%22%7d
+not discovered resources:%7b%22url%22%3a%22http%3a%2f%2fthumbnail%2eegloos%2enet%2f460x0%2fhttp%3a%2f%2fpds27%2eegloos%2ecom%2fpds%2f202306%2f05%2f83%2fa0016483_647defb88bd9a%2ejpg%22%7d
+
+# Page 2 of nonexistent user
+[api_post_list:%7b%22url%22%3a%22https%3a%2f%2fapi%2eegloos%2ecom%2fhpfenphf%2fpost%2ejson%3fpage%3d2%22%7d]
+some exact https://api.egloos.com/hpfenphf/post.json?page=2
+not exact https://api.egloos.com/hpfenphf/post.json?page=3
