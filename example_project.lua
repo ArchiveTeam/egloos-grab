@@ -154,6 +154,7 @@ egloos_api_tsa = function(url, http_stat)
         -- Sent to the closed site, retry
         local new_options = deep_copy(current_options)
         local cur_try = new_options["try"] or 1
+        assert(cur_try < 100)
         new_options["try"] = cur_try + 1
         queue_request(new_options, current_handler, false)
         return false
@@ -164,7 +165,7 @@ egloos_api_tsa = function(url, http_stat)
         os.execute("sleep " .. current_rate_limit_backoff)
         return false
     else
-        retry_common.retry_unless_hit_iters(15)
+        retry_common.retry_unless_hit_iters(10)
         return false
     end
 end
